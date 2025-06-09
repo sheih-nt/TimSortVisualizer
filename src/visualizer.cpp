@@ -1,0 +1,64 @@
+#include "raylib.h"
+#include "raygui.h"
+#include "visualizer.hpp"
+#include <fstream>
+#include <algorithm>
+
+std::vector<int> LoadNumbersFromFile(const std::string& path) {
+    std::ifstream file(path);
+    std::vector<int> numbers;
+    int num;
+    while (file >> num) numbers.push_back(num);
+    return numbers;
+}
+
+AppState RenderMenu() {
+    DrawText("TimSort Visualizer", 100, 80, 40, DARKGRAY);
+    if (GuiButton({100, 200, 200, 50}, "Start (anim)")) return SORTING;
+    if (GuiButton({100, 270, 200, 50}, "Start (sahg)")) return STEP_MODE;
+    if (GuiButton({100, 340, 200, 50}, "About algo")) return INFO;
+    if (GuiButton({100, 410, 200, 50}, "Exit")) return EXIT;
+    return MENU;
+}
+
+AppState RenderInfo() {
+    DrawText("TimSort — гибрид Insertion и Merge Sort.", 100, 100, 24, DARKGRAY);
+    DrawText("Нажмите [ESC] для возврата", 100, 150, 20, GRAY);
+    if (IsKeyPressed(KEY_ESCAPE)) return MENU;
+    return INFO;
+}
+
+
+AppState RenderSorting(const std::vector<int>& arr, int a, std::optional<int> b, std::vector<int> merged, bool stepMode) {
+        ClearBackground(RAYWHITE);
+
+        int screenWidth = GetScreenWidth();
+        int screenHeight = GetScreenHeight();
+
+        int barWidth = screenWidth / arr.size();
+        int fontSize = 12; // Размер шрифта для подписей
+        int textPadding = 5; // Отступ текста от столбца
+
+        for (size_t i = 0; i < arr.size(); ++i) {
+            Color color = GRAY;
+            if ((int)i == a) color = RED;
+            else if (b && (int)i == b.value()) color = GREEN;
+            else if (std::find(merged.begin(), merged.end(), i) != merged.end()) color = ORANGE;
+
+            int height = arr[i] * 5;
+            DrawRectangle(i * barWidth, screenHeight - height - fontSize - textPadding,
+                         barWidth - 1, height, color);
+
+            // Рисуем подпись числа под столбцом
+            DrawText(TextFormat("%d", arr[i]),
+                    i * barWidth + (barWidth - MeasureText(TextFormat("%d", arr[i]), fontSize)) / 2,
+                    screenHeight - fontSize,
+                    fontSize,
+                    DARKGRAY);
+        }
+
+        DrawText("ESC - Menu | SPACE - Step | ENTER - Finish", 10, 10, 20, DARKGRAY);
+
+        if (IsKeyDown(KEY_ESCAPE)) return MENU;
+        return stepMode ? STEP_MODE : SORTING;
+}

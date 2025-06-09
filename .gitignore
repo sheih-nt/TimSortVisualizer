@@ -1,0 +1,30 @@
+# Бинарники и объектные файлы
+*.exe
+*.out
+*.o
+*.a
+*.so
+*.dll
+*.lib
+
+# Папки сборки
+bin/
+obj/
+build/
+Debug/
+Release/
+
+# IDE
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln
+
+# Системные
+.DS_Store
+Thumbs.db
+
+# Логи и временные файлы
+*.log
+*.tmp
