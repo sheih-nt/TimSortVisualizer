@@ -71,7 +71,11 @@ std::vector<int> GenerateRandomNumbers(int count, int max_value) {
 }
 
 bool IsFileDroppedCustom() {
-    return ::IsFileDropped();
+    #ifdef _WIN32
+        return ::IsFileDropped();
+    #else
+        return ::IsFileDropped();
+    #endif
 }
 
 std::string GetDroppedFilePath() {
