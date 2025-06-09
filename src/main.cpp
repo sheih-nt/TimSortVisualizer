@@ -110,7 +110,7 @@ int main() {
 
                 // Настройки скорости
                 DrawText("Speed:", 100, 500, 20, DARKGRAY);
-                GuiSlider({170, 500, 200, 20}, "Slow", "Fast", &sortSpeed, 5.0f, 100.0f);
+                GuiSlider({200, 500, 200, 20}, "Slow", "Fast", &sortSpeed, 5.0f, 100.0f);
 
                 // Правая панель - данные
                 DrawRectangle(500, 200, 400, 300, Fade(LIGHTGRAY, 0.3f));
