@@ -35,8 +35,8 @@ AppState RenderSorting(const std::vector<int>& arr, int a, std::optional<int> b,
     int screenHeight = GetScreenHeight();
 
     int barWidth = screenWidth / arr.size();
-    int fontSize = 12; // Размер шрифта для подписей
-    int textPadding = 5; // Отступ текста от столбца
+    int fontSize = 12;
+    int textPadding = 5;
 
     for (size_t i = 0; i < arr.size(); ++i) {
         Color color = GRAY;
@@ -48,7 +48,6 @@ AppState RenderSorting(const std::vector<int>& arr, int a, std::optional<int> b,
         DrawRectangle(i * barWidth, screenHeight - height - fontSize - textPadding,
                        barWidth - 1, height, color);
 
-        // Рисуем подпись числа под столбцом
         DrawText(TextFormat("%d", arr[i]),
                  i * barWidth + (barWidth - MeasureText(TextFormat("%d", arr[i]), fontSize)) / 2,
                  screenHeight - fontSize,
@@ -56,10 +55,11 @@ AppState RenderSorting(const std::vector<int>& arr, int a, std::optional<int> b,
                  DARKGRAY);
     }
 
-    DrawText("ESC - Menu | SPACE - Step | ENTER - Finish", 10, 10, 20, DARKGRAY);
+    // Обновленная строка подсказки
+    DrawText(stepMode ? "ENTER - Menu | SPACE - Step" : "ENTER - Menu", 10, 10, 20, DARKGRAY);
 
-    if (IsKeyDown(KEY_ESCAPE)) return MENU;
-    return stepMode ? STEP_MODE : SORTING;
+    if (IsKeyPressed(KEY_ENTER)) return MENU;
+        return stepMode ? STEP_MODE : SORTING;
 }
 
 std::vector<int> GenerateRandomNumbers(int count, int max_value) {

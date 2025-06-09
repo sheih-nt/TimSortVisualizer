@@ -155,7 +155,7 @@ int main() {
                     sortState.step(arr);
                 }
 
-                if (IsKeyPressed(KEY_ENTER)) state = MENU;
+                if (IsKeyPressed(KEY_ENTER)) state = MENU;  // Возврат в меню по ENTER
                 state = RenderSorting(arr, sortState.j + 1, sortState.i, {}, false);
                 break;
             }
@@ -165,7 +165,7 @@ int main() {
                     sortState.step(arr);
                 }
 
-                if (IsKeyPressed(KEY_ENTER)) state = MENU;
+                if (IsKeyPressed(KEY_ENTER)) state = MENU;  // Возврат в меню по ENTER
                 state = RenderSorting(arr, sortState.j + 1, sortState.i, {}, true);
                 break;
             }
