@@ -28,37 +28,60 @@ AppState RenderInfo() {
     return INFO;
 }
 
-
 AppState RenderSorting(const std::vector<int>& arr, int a, std::optional<int> b, std::vector<int> merged, bool stepMode) {
-        ClearBackground(RAYWHITE);
+    ClearBackground(RAYWHITE);
 
-        int screenWidth = GetScreenWidth();
-        int screenHeight = GetScreenHeight();
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
 
-        int barWidth = screenWidth / arr.size();
-        int fontSize = 12; // Размер шрифта для подписей
-        int textPadding = 5; // Отступ текста от столбца
+    int barWidth = screenWidth / arr.size();
+    int fontSize = 12; // Размер шрифта для подписей
+    int textPadding = 5; // Отступ текста от столбца
 
-        for (size_t i = 0; i < arr.size(); ++i) {
-            Color color = GRAY;
-            if ((int)i == a) color = RED;
-            else if (b && (int)i == b.value()) color = GREEN;
-            else if (std::find(merged.begin(), merged.end(), i) != merged.end()) color = ORANGE;
+    for (size_t i = 0; i < arr.size(); ++i) {
+        Color color = GRAY;
+        if ((int)i == a) color = RED;
+        else if (b && (int)i == b.value()) color = GREEN;
+        else if (std::find(merged.begin(), merged.end(), i) != merged.end()) color = ORANGE;
 
-            int height = arr[i] * 5;
-            DrawRectangle(i * barWidth, screenHeight - height - fontSize - textPadding,
-                         barWidth - 1, height, color);
+        int height = arr[i] * 5;
+        DrawRectangle(i * barWidth, screenHeight - height - fontSize - textPadding,
+                       barWidth - 1, height, color);
 
-            // Рисуем подпись числа под столбцом
-            DrawText(TextFormat("%d", arr[i]),
-                    i * barWidth + (barWidth - MeasureText(TextFormat("%d", arr[i]), fontSize)) / 2,
-                    screenHeight - fontSize,
-                    fontSize,
-                    DARKGRAY);
+        // Рисуем подпись числа под столбцом
+        DrawText(TextFormat("%d", arr[i]),
+                 i * barWidth + (barWidth - MeasureText(TextFormat("%d", arr[i]), fontSize)) / 2,
+                 screenHeight - fontSize,
+                 fontSize,
+                 DARKGRAY);
+    }
+
+    DrawText("ESC - Menu | SPACE - Step | ENTER - Finish", 10, 10, 20, DARKGRAY);
+
+    if (IsKeyDown(KEY_ESCAPE)) return MENU;
+    return stepMode ? STEP_MODE : SORTING;
+}
+
+std::vector<int> GenerateRandomNumbers(int count, int max_value) {
+    std::vector<int> numbers;
+    for (int i = 0; i < count; ++i) {
+        numbers.push_back(GetRandomValue(1, max_value));
+    }
+    return numbers;
+}
+
+bool IsFileDroppedCustom() {
+    return ::IsFileDropped();
+}
+
+std::string GetDroppedFilePath() {
+    if (IsFileDroppedCustom()) {
+        FilePathList files = ::LoadDroppedFiles();
+        if (files.count > 0) {
+            std::string path(files.paths[0]);
+            ::UnloadDroppedFiles(files); // Используем UnloadDroppedFiles вместо ClearDroppedFiles
+            return path;
         }
-
-        DrawText("ESC - Menu | SPACE - Step | ENTER - Finish", 10, 10, 20, DARKGRAY);
-
-        if (IsKeyDown(KEY_ESCAPE)) return MENU;
-        return stepMode ? STEP_MODE : SORTING;
+    }
+    return "";
 }

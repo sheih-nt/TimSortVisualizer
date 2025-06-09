@@ -11,8 +11,10 @@
 bin/
 obj/
 build/
+build-win/
 Debug/
 Release/
+.cache/
 
 # IDE
 .vscode/
