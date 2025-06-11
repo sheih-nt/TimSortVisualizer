@@ -25,7 +25,7 @@ av
 ### Установка зависимостей
 #### Linux (Debian/Ubuntu)
 ```bash
-sudo apt install build-essential cmake libraylib-dev
+sudo apt install raylib raygui git gcc
 ```
 #### Arch Linux
 ```bash
