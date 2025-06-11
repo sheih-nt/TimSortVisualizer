@@ -34,6 +34,7 @@ sudo pacman -S cmake raylib raygui git gcc
 
 #### Windows
 тут будет установка через MSYS2
+
 ---
 
 ## 🛠 Сборка и запуск
